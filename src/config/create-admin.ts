@@ -1,10 +1,11 @@
 
 import 'reflect-metadata';
-import 'dotenv/config';
+import dotenv from 'dotenv';
 import bcrypt from 'bcryptjs';
+import { AppDataSource } from './database';
+import { Role } from '../models/role.model';
 
-import { AppDataSource } from './database.js';
-import { Role } from '../models/role.model.js';
+dotenv.config();
 
 async function createAdmin() {
   const email = process.env.ADMIN_EMAIL?.trim().toLowerCase();
@@ -18,7 +19,6 @@ async function createAdmin() {
 
   try {
     const repository = AppDataSource.getRepository(Role);
-
     const existing = await repository.findOneBy({ email });
 
     if (existing) {
@@ -34,14 +34,13 @@ async function createAdmin() {
     });
 
     await repository.save(admin);
-
     console.log('Admin account created successfully');
   } finally {
     await AppDataSource.destroy();
   }
 }
 
-createAdmin().catch((error) => {
+createAdmin().catch(error => {
   console.error('Admin creation failed:', error.message);
   process.exitCode = 1;
 });
