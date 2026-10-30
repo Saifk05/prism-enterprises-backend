@@ -4,6 +4,7 @@ import { DataSource } from 'typeorm';
 
 import { Role } from '../models/role.model';
 import { Product } from '../models/product.model';
+import { Enquiry } from '../models/enquiry.model';
 
 dotenv.config();
 
@@ -20,10 +21,7 @@ export const AppDataSource = new DataSource({
     rejectUnauthorized: process.env.NODE_ENV !== 'development'
   },
 
-  entities: [
-    Role,
-    Product
-  ],
+  entities: [Role, Product, Enquiry],
 
   synchronize: process.env.NODE_ENV === 'development',
 
